@@ -22,12 +22,24 @@ export class JournalEntryEntity implements EntityMapper<JournalEntryModel> {
     @ManyToOne(() => SessionEntity, (session) => session.journalEntries)
     session: SessionEntity;
 
+    @Column({ default: '' })
+    summary: string;
+
+    @Column({ default: '' })
+    keywords: string;
+
+    @Column({ type: 'simple-json', default: '{}' })
+    emotion_score: any;
+
     copy(model: JournalEntryModel) {
         this.id = model.id;
         this.entry = model.entry;
         this.user = model.user as UserEntity;
         this.question = model.question as QuestionEntity;
         this.session = model.session as SessionEntity;
+        this.summary = model.summary;
+        this.keywords = model.keywords;
+        this.emotion_score = model.emotion_score;
         return this;
     }
 
@@ -38,6 +50,9 @@ export class JournalEntryEntity implements EntityMapper<JournalEntryModel> {
         model.user = this.user;
         model.question = this.question;
         model.session = this.session;
+        model.summary = this.summary;
+        model.keywords = this.keywords;
+        model.emotion_score = this.emotion_score;
         return model;
     }
 }

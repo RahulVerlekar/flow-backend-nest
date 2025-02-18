@@ -18,7 +18,7 @@ export class SessionController {
 
     @Get()
     async getUserSessions(@Request() req) {
-        return await this.sessionService.findByUserId(req.user.id);
+        return await this.sessionService.findByUserId(req.user.userId);
     }
 
     //Start a new session 
@@ -52,16 +52,22 @@ export class SessionController {
     async getNextQuestion(@Request() req, @Param('sessionid') sessionId: string) {
         const entries = await this.getEntriesForSession(req, sessionId);
         //create a new journal entry
+        const entry = new JournalEntryModel()
         const question = new QuestionModel()
         if (entries.length == 0) {
             question.hint = "This is the hint to the next question"
             question.question = "Hello, How can I help ?"
         }
         else {
-            question.question = await this.aiService.getNextQuestion(entries)
-            question.hint = "This is the hint to the next"
+            const response = await this.aiService.getNextQuestionAsJson(entries)
+            //parse the json from response and get the question and hint key
+            const json = JSON.parse(response)
+            question.question = json.question
+            question.hint = json.hint
+            entry.emotion_score = json.emotions_score
+            entry.keywords = json.keywords.toString()
+            entry.summary = json.summary
         }
-        const entry = new JournalEntryModel()
         entry.question = (await this.questionService.create(question)).toModel()
         entry.entry = ""
         entry.session = await this.sessionService.findOne(sessionId)

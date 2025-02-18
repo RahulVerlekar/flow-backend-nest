@@ -44,6 +44,9 @@ export class SessionService extends BaseService<SessionEntity, SessionModel> {
         const journalEntry = new JournalEntryEntity();
         journalEntry.id = entryId;
         journalEntry.entry = entry;
+        journalEntry.summary = "";      // default summary empty
+        journalEntry.keywords = "";     // default keywords empty
+        journalEntry.emotion_score = {}; // default emotion score as empty JSON
         session.journalEntries.push(journalEntry);
         return this.update(session.toModel());
     }
@@ -69,6 +72,9 @@ export class SessionService extends BaseService<SessionEntity, SessionModel> {
     async processAnswerForNextQuestion(): Promise<JournalEntryEntity> {
         const entry = new JournalEntryEntity();
         entry.entry = '';
+        entry.summary = "";      // default summary empty
+        entry.keywords = "";     // default keywords empty
+        entry.emotion_score = {}; // default emotion score as empty JSON
         const question = new QuestionEntity()
         question.hint = 'This is the hint';
         question.question = 'This is the question';

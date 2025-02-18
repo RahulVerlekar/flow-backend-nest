@@ -1,9 +1,10 @@
 
 
+# @baseUrl = https://specifics.fyi
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzkxODAwNzIwNDEzMyIsImlhdCI6MTczOTQ3MDQ3MiwiZXhwIjoxNzUyNDMwNDcyfQ.nLwwNvEFEJ6uWskKRFGCVBWU2huqSVcF5g6yqYqd4y0
-@sessionId = 4495b9b9-eb89-4cc9-9406-846ad49783cd
-@entryId = 24643790-9f17-4c58-97e7-d419cf036bd0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzkxODAwNzIwNDEzMyIsImlhdCI6MTczOTg5MTY5MSwiZXhwIjoxNzUyODUxNjkxfQ.ki3xzCYIceGt2X3iFrTEgSqDsf2qN5e84V8boITQggs
+@sessionId = 72b32a85-35e1-460e-85e2-bac96f0a70ff
+@entryId = 69e5e597-9e36-4acf-aa07-4d90148d17bc
 
 ### Get all sessions for user
 GET {{baseUrl}}/sessions
@@ -22,12 +23,12 @@ GET {{baseUrl}}/sessions/{{sessionId}}/next-question
 Authorization: Bearer {{token}}
 
 ### Add answer to a question in a session
-POST  {{baseUrl}}/sessions/{{sessionId}}/add-answer/a9ae3ae3-78b8-4011-82cc-ed43712a8b52
+POST  {{baseUrl}}/sessions/{{sessionId}}/add-answer/{{entryId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "answer": "I should have waited and not rushed into it, May be planned a little bit. I did plan in my mind but when one thing failed I was just very very anxious about waht to do. I tried my best to get an idea of how to figure out a solutions i did google again and again but it was to no avail. After this even the tasks that i do on daily basis were not possible for me."
+    "answer": "I dont know keep quite"
 }
 
 ### Get all entries for a session

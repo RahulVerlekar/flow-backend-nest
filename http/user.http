@@ -1,5 +1,5 @@
 ### User API Tests
-@baseURL = http://107.172.34.133:3050
+@baseURL = http://localhost:3000
 @token = your-jwt-token-here
 
 ### Create User
@@ -15,6 +15,11 @@ Content-Type: application/json
 ### Login User
 POST {{baseURL}}/users/login
 Content-Type: application/json
+
+# {
+#     "email": "shantanu.bhavu@specifics.fyi",
+#     "password": "password123"
+# }
 
 {
     "email": "test@example.com",
