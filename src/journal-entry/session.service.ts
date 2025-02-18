@@ -86,4 +86,18 @@ export class SessionService extends BaseService<SessionEntity, SessionModel> {
         const session = await this.repo.findOne({ where: { id: sessionId } , relations: ['journalEntries'], loadRelationIds: true});
         return session.journalEntries;
     }
+
+    async getLastEntries(userId: string): Promise<Array<{ sessionId: string, lastEntry: any }>> {
+        const sessions = await this.repo.find({
+            where: { user: { id: +userId } },
+            relations: ['journalEntries'],
+            loadRelationIds: false
+        });
+        return sessions.map(session => ({
+            sessionId: session.id,
+            lastEntry: session.journalEntries && session.journalEntries.length 
+                ? session.journalEntries[session.journalEntries.length - 1]
+                : null
+        }));
+    }
 }

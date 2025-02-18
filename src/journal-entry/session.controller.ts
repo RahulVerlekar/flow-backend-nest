@@ -95,4 +95,9 @@ export class SessionController {
         const entries = await this.journalService.findBySessionId(sessionId);
         return entries.map(entry => entry.toModel());
     }
+
+    @Get('last-entries')
+    async getLastEntries(@Request() req) {
+        return await this.sessionService.getLastEntries(req.user.userId);
+    }
 }

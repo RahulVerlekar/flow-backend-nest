@@ -34,3 +34,7 @@ Content-Type: application/json
 ### Get all entries for a session
 GET {{baseUrl}}/sessions/{{sessionId}}/entries
 Authorization: Bearer {{token}}
+
+### Get all entries for a session
+GET {{baseUrl}}/sessions/last-entries
+Authorization: Bearer {{token}}
