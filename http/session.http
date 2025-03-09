@@ -1,7 +1,7 @@
 
 
-@baseUrl = https://specifics.fyi
-# @baseUrl = http://localhost:3000
+# @baseUrl = https://specifics.fyi
+@baseUrl = http://localhost:3000
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzkxODAwNzIwNDEzMyIsImlhdCI6MTczOTg5MTY5MSwiZXhwIjoxNzUyODUxNjkxfQ.ki3xzCYIceGt2X3iFrTEgSqDsf2qN5e84V8boITQggs
 @sessionId = 374852c0-a7b6-455b-a706-2cf62bd3fea9
 @entryId = 69e5e597-9e36-4acf-aa07-4d90148d17bc
@@ -37,4 +37,8 @@ Authorization: Bearer {{token}}
 
 ### Get all entries for a session
 GET {{baseUrl}}/sessions/last-entries
+Authorization: Bearer {{token}}
+
+### Get all entries for a session
+GET {{baseUrl}}/sessions/update-all-sessions
 Authorization: Bearer {{token}}

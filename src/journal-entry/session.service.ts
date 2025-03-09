@@ -25,6 +25,12 @@ export class SessionService extends BaseService<SessionEntity, SessionModel> {
         const user = new UserEntity();
         user.id = +userId;
         session.user = user;
+        session.summaryTitle = '';
+        session.summary = '';
+        session.frameworkTitle = 'Random Log';
+        session.keywords = '';
+        session.emotion_score = {};
+        session.quote = '';  // initialize the new field
         return this.create(session.toModel());
     }
 
