@@ -75,7 +75,9 @@ export class SessionController {
             question.question = json.question
             question.hint = json.hint
             entry.emotion_score = json.emotions_score
+            session.emotion_score = json.emotions_score;
             entry.keywords = json.keywords.toString()
+            session.keywords = json.keywords.toString()
             entry.summary = json.summary
             summary = json.summary
             oneline_summary = json.oneline_summary
