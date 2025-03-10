@@ -41,7 +41,10 @@ export class JournalEntryService extends BaseService<JournalEntryEntity, Journal
         return await this.journalEntryRepository.find({
             where: { session: { id: sessionId } },
             relations: ['question']
-        });
+        }).then(entries => {
+            return entries.map(entry => {
+                return entry.toModel();
+            })})
     }
     
 }

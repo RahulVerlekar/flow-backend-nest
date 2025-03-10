@@ -106,7 +106,17 @@ export class SessionController {
     @Get(':sessionid/entries')
     async getEntriesForSession(@Request() req, @Param('sessionid') sessionId: string) {
         const entries = await this.journalService.findBySessionId(sessionId);
-        return entries.map(entry => entry.toModel());
+        return entries;
+    }
+
+    @Get(':sessionid/details')
+    async getSessionDetails(@Request() req, @Param('sessionid') sessionId: string): Promise<{session: SessionModel, entries: JournalEntryModel[]}> {
+        const entries = await this.journalService.findBySessionId(sessionId);
+        const session = await this.sessionService.findOne(sessionId);
+        return {
+            session: session,
+            entries: entries
+        };
     }
 
     @Get('last-entries')
@@ -120,7 +130,7 @@ export class SessionController {
         for (const session of sessions) {
             const entries = await this.journalService.findBySessionId(session.id);
             if (entries.length > 0) {
-                const response = await this.aiService.getNextQuestionAsJson(entries.map(entry => entry.toModel()));
+                const response = await this.aiService.getNextQuestionAsJson(entries);
                 const json = JSON.parse(response);
                 session.summary = json.summary;
                 session.summaryTitle = json.oneline_summary;
