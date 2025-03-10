@@ -1,17 +1,15 @@
-
-
-@baseUrl = https://specifics.fyi
-# @baseUrl = http://localhost:3000
+# @baseUrl = https://specifics.fyi
+@baseUrl = http://localhost:3000
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzkxODAwNzIwNDEzMyIsImlhdCI6MTczOTg5MTY5MSwiZXhwIjoxNzUyODUxNjkxfQ.ki3xzCYIceGt2X3iFrTEgSqDsf2qN5e84V8boITQggs
-@sessionId = 374852c0-a7b6-455b-a706-2cf62bd3fea9
-@entryId = 69e5e597-9e36-4acf-aa07-4d90148d17bc
+@sessionId = 237d5ff3-7a86-4fee-921d-97d12fcce5d0
+@entryId = ba414d4d-0d56-4fca-90ee-c11909f2214b
 
 ### Get all sessions for user
 GET {{baseUrl}}/sessions
 Authorization: Bearer {{token}}
 
 ### Start a new session
-GET {{baseUrl}}/sessions/start
+GET {{baseUrl}}/sessions/start?framework=Evening Reflections
 Authorization: Bearer {{token}}
 
 ### End a session
@@ -23,7 +21,7 @@ GET {{baseUrl}}/sessions/{{sessionId}}/next-question
 Authorization: Bearer {{token}}
 
 ### Add answer to a question in a session
-POST  {{baseUrl}}/sessions/{{sessionId}}/add-answer/{{entryId}}
+POST {{baseUrl}}/sessions/{{sessionId}}/add-answer/{{entryId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -33,6 +31,10 @@ Content-Type: application/json
 
 ### Get all entries for a session
 GET {{baseUrl}}/sessions/{{sessionId}}/entries
+Authorization: Bearer {{token}}
+
+### Get all entries for a session
+GET {{baseUrl}}/sessions/{{sessionId}}/details
 Authorization: Bearer {{token}}
 
 ### Get all entries for a session

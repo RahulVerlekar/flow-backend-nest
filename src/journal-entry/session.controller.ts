@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Request } from '@nestjs/common';
+import { Controller, Get, Param, Post, Request, Query } from '@nestjs/common';
 import { SessionService } from './session.service';
 import { SessionModel } from '../domain/models/session.model';
 import { UserModel } from '../domain/models/user.model';
@@ -23,7 +23,7 @@ export class SessionController {
 
     //Start a new session 
     @Get('start')
-    async startNewSession(@Request() req) {
+    async startNewSession(@Request() req, @Query('framework') framework: string) {
         const session = new SessionModel();
         session.startTime = new Date();
         session.endTime = new Date();
@@ -31,10 +31,12 @@ export class SessionController {
         session.user.id = req.user.userId;
         session.summaryTitle = '';
         session.summary = '';
-        session.frameworkTitle = 'Random Log';
+        session.frameworkTitle = framework || 'Random Log';
         session.keywords = '';
         session.emotion_score = {};
-        return await this.sessionService.create(session);
+        session.quote = '';
+        const created = await this.sessionService.create(session);
+        return await this.getNextQuestion(req, created.id);
     }
 
     //End a session
@@ -63,11 +65,11 @@ export class SessionController {
         var oneline_summary = "Chat is just started"
         var summary = "We will summarize the chat at the end"
         if (entries.length == 0) {
-            question.hint = "This is the hint to the next question"
-            question.question = "Hello, How can I help ?"
+            question.hint = "You can talk about anything you want, just be yourself"
+            question.question = "Hello, What would you like to talk about ?"
         }
         else {
-            const response = await this.aiService.getNextQuestionAsJson(entries)
+            const response = await this.aiService.getNextQuestionAsJson(entries, session.frameworkTitle)
             //parse the json from response and get the question and hint key
             const json = JSON.parse(response)
             question.question = json.question
@@ -77,15 +79,18 @@ export class SessionController {
             entry.summary = json.summary
             summary = json.summary
             oneline_summary = json.oneline_summary
-            session.quote = json.quote || ''; 
+            session.quote = json.quote || '';
         }
         entry.question = (await this.questionService.create(question)).toModel()
         entry.entry = ""
+        entry.session = session
         session.summary = summary
         session.summaryTitle = oneline_summary
-        await this.sessionService.update(session)
-        await this.journalService.create(entry)
-        return await this.getEntriesForSession(req, sessionId);
+        const sessionEdit = (await this.sessionService.update(session)).toModel()
+        const entryCreated = (await this.journalService.create(entry)).toModel()
+        //remove key session from entry
+        delete entryCreated.session
+        return { session: sessionEdit, entries: entries.concat(entryCreated) };
     }
 
     //Add answer to a question in a session
@@ -110,7 +115,7 @@ export class SessionController {
     }
 
     @Get(':sessionid/details')
-    async getSessionDetails(@Request() req, @Param('sessionid') sessionId: string): Promise<{session: SessionModel, entries: JournalEntryModel[]}> {
+    async getSessionDetails(@Request() req, @Param('sessionid') sessionId: string): Promise<{ session: SessionModel, entries: JournalEntryModel[] }> {
         const entries = await this.journalService.findBySessionId(sessionId);
         const session = await this.sessionService.findOne(sessionId);
         return {
@@ -130,13 +135,13 @@ export class SessionController {
         for (const session of sessions) {
             const entries = await this.journalService.findBySessionId(session.id);
             if (entries.length > 0) {
-                const response = await this.aiService.getNextQuestionAsJson(entries);
+                const response = await this.aiService.getNextQuestionAsJson(entries, session.frameworkTitle);
                 const json = JSON.parse(response);
                 session.summary = json.summary;
                 session.summaryTitle = json.oneline_summary;
                 session.keywords = json.keywords.toString();
                 session.emotion_score = json.emotions_score;
-                session.quote = json.quote || ''; 
+                session.quote = json.quote || '';
                 await this.sessionService.update(session);
             }
         }
