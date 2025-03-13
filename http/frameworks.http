@@ -67,6 +67,43 @@ Content-Type: application/json
     ]
 }
 
+### Bulk create a framework with embedded questions
+POST {{baseUrl}}/frameworks/bulk-create
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "Daily Reflection Journal",
+    "description": "A framework for daily personal reflection and growth tracking",
+    "questions": [
+        {
+            "question": "What went well today?",
+            "hint": "Think about your accomplishments, positive interactions, and moments of joy",
+            "order": 1
+        },
+        {
+            "question": "What challenged you today?",
+            "hint": "Reflect on obstacles, difficult situations, or areas where you struggled",
+            "order": 2
+        },
+        {
+            "question": "What did you learn today?",
+            "hint": "Consider new insights, skills, or perspectives you gained",
+            "order": 3
+        },
+        {
+            "question": "What are you grateful for today?",
+            "hint": "Identify things, people, or experiences you appreciate",
+            "order": 4
+        },
+        {
+            "question": "What's your intention for tomorrow?",
+            "hint": "Set a positive focus or goal for the day ahead",
+            "order": 5
+        }
+    ]
+}
+
 ### Update a basic framework
 PUT {{baseUrl}}/frameworks/{{frameworkId}}
 Content-Type: application/json

@@ -4,9 +4,10 @@ import { BaseService } from "../common/base.service";
 import { FrameworkEntity } from "../db/framework.entity";
 import { FrameworkModel } from "../domain/models/framework.model";
 import { Repository } from "typeorm";
-import { CreateFrameworkDto } from "../dto/create.framework";
+import { BulkCreateFrameworkDto, CreateFrameworkDto } from "../dto/create.framework";
 import { FrameworkQuestionEntity } from "../db/framework-question.entity";
 import { QuestionEntity } from "../db/question.entity";
+import { QuestionModel } from "src/domain/models/question.model";
 
 @Injectable()
 export class FrameworkService extends BaseService<FrameworkEntity, FrameworkModel> {
@@ -70,6 +71,37 @@ export class FrameworkService extends BaseService<FrameworkEntity, FrameworkMode
             where: { id: savedFramework.id },
             relations: ['frameworkQuestions', 'frameworkQuestions.question']
         });
+    }
+
+    async bulkCreateWithQuestions(bulkCreateFrameworkDto: BulkCreateFrameworkDto): Promise<FrameworkModel> {
+    
+        const frameworkEntity = new FrameworkEntity();
+        frameworkEntity.title = bulkCreateFrameworkDto.title;
+        frameworkEntity.description = bulkCreateFrameworkDto.description;
+        const savedFramework = await this.repository.save(frameworkEntity);
+
+        if (bulkCreateFrameworkDto.questions && bulkCreateFrameworkDto.questions.length > 0) {
+            for (const questionDto of bulkCreateFrameworkDto.questions) {
+
+                const questionEntity = new QuestionEntity();
+                questionEntity.question = questionDto.question;
+                questionEntity.hint = questionDto.hint;
+                const savedQuestion = await this.questionRepository.save(questionEntity);
+                
+                const frameworkQuestionEntity = new FrameworkQuestionEntity();
+                frameworkQuestionEntity.framework = savedFramework;
+                frameworkQuestionEntity.question = savedQuestion;
+                frameworkQuestionEntity.order = questionDto.order;
+                
+                await this.frameworkQuestionRepository.save(frameworkQuestionEntity);
+            }
+        }
+
+        const data = await this.repository.findOne({
+            where: { id: savedFramework.id },
+            relations: ['frameworkQuestions', 'frameworkQuestions.question']
+        });
+        return data.toModel();
     }
 
     async updateWithQuestions(id: string, updateFrameworkDto: CreateFrameworkDto): Promise<FrameworkEntity> {

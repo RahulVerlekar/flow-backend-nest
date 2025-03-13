@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpExcept
 import { BaseController } from "../common/base.controller";
 import { FrameworkModel } from "../domain/models/framework.model";
 import { FrameworkService } from "./framework.service";
-import { CreateFrameworkDto } from "../dto/create.framework";
+import { BulkCreateFrameworkDto, CreateFrameworkDto } from "../dto/create.framework";
 
 @Controller('frameworks')
 export class FrameworkController extends BaseController<FrameworkModel> {
@@ -37,6 +37,16 @@ export class FrameworkController extends BaseController<FrameworkModel> {
         try {
             const framework = await this.frameworkService.createWithQuestions(createFrameworkDto);
             return framework.toModel();
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Post('bulk-create')
+    async bulkCreateWithQuestions(@Body() bulkCreateFrameworkDto: BulkCreateFrameworkDto): Promise<FrameworkModel> {
+        try {
+            const framework = await this.frameworkService.bulkCreateWithQuestions(bulkCreateFrameworkDto);
+            return framework;
         } catch (error) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
