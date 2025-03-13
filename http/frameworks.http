@@ -1,27 +1,117 @@
+# @baseUrl = https://specifics.fyi
 @baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzkxODAwNzIwNDEzMyIsImlhdCI6MTczOTg5MTY5MSwiZXhwIjoxNzUyODUxNjkxfQ.ki3xzCYIceGt2X3iFrTEgSqDsf2qN5e84V8boITQggs
+@sessionId = 237d5ff3-7a86-4fee-921d-97d12fcce5d0
+@questionId1 = cab80ace-5041-436c-aaf2-f648dc48243e
+@questionId2 = b5ce1ce1-c0d4-4731-9581-62e651c7c2f3
+@questionId3 = 764eaad1-54a2-4aa8-9a72-df30ed3537c9
+@questionId4 = 2c070c94-de11-46d5-9551-041dabbb753d
+@questionId5 = 953a5735-cc88-4352-a4a4-249ea1b69538
+@frameworkId = 6bdfd685-bf15-42b3-ad48-9f7b2e10d6fe
 
 ### Get all frameworks
 GET {{baseUrl}}/frameworks
+Authorization: Bearer {{token}}
 
 ### Get frameworks with questions
 GET {{baseUrl}}/frameworks/with-questions
+Authorization: Bearer {{token}}
 
-### Create a new framework
+### Get a specific framework by ID
+GET {{baseUrl}}/frameworks/{{frameworkId}}
+Authorization: Bearer {{token}}
+
+### Get a specific framework with questions by ID
+GET {{baseUrl}}/frameworks/{{frameworkId}}/with-questions
+Authorization: Bearer {{token}}
+
+### Create a basic framework
 POST {{baseUrl}}/frameworks
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "name": "Software Architecture Principles",
-    "description": "Core principles and patterns of software architecture",
-    "category": "ARCHITECTURE"
+    "title": "Software Architecture Principles",
+    "description": "Core principles and patterns of software architecture"
 }
 
-### Create another framework
-POST {{baseUrl}}/frameworks
+### Create a framework with questions
+POST {{baseUrl}}/frameworks/with-questions
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "name": "Clean Code Practices",
-    "description": "Essential practices for writing maintainable code",
-    "category": "BEST_PRACTICES"
+    "title": "Ikigai",
+    "description": "Find your purpose by thinking about what you love, what you're good at, can get paid for, and what makes the world a better place.",
+    "frameworkQuestions": [
+        {
+            "questionId": "{{questionId1}}",
+            "order": 1
+        },
+        {
+            "questionId": "{{questionId2}}",
+            "order": 2
+        },
+        {
+            "questionId": "{{questionId3}}",
+            "order": 3
+        },
+        {
+            "questionId": "{{questionId4}}",
+            "order": 4
+        },
+        {
+            "questionId": "{{questionId5}}",
+            "order": 5
+        }
+    ]
 }
+
+### Update a basic framework
+PUT {{baseUrl}}/frameworks/{{frameworkId}}
+Content-Type: application/json
+
+{
+    "title": "Updated Framework Title",
+    "description": "Updated framework description"
+}
+
+### Update a framework with questions
+PUT {{baseUrl}}/frameworks/{{frameworkId}}/with-questions
+Content-Type: application/json
+
+{
+    "title": "Updated Framework with Questions",
+    "description": "This framework has been updated with new questions",
+    "frameworkQuestions": [
+        {
+            "questionId": "{{questionId1}}",
+            "order": 1
+        },
+        {
+            "questionId": "{{questionId2}}",
+            "order": 2
+        },
+        {
+            "questionId": "{{questionId3}}",
+            "order": 3
+        }
+    ]
+}
+
+### Partial update of a framework
+PATCH {{baseUrl}}/frameworks/{{frameworkId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "Partially Updated Framework"
+}
+
+### Delete a framework
+DELETE {{baseUrl}}/frameworks/{{frameworkId}}
+Authorization: Bearer {{token}}
+
+### Delete a framework with its related questions
+DELETE {{baseUrl}}/frameworks/{{frameworkId}}/with-questions
+Authorization: Bearer {{token}}

@@ -90,7 +90,6 @@ export class SessionController {
         session.summaryTitle = oneline_summary
         const sessionEdit = (await this.sessionService.update(session)).toModel()
         const entryCreated = (await this.journalService.create(entry)).toModel()
-        //remove key session from entry
         delete entryCreated.session
         return { session: sessionEdit, entries: entries.concat(entryCreated) };
     }

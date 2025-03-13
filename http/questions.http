@@ -1,15 +1,18 @@
 @baseUrl = http://localhost:3000
 @resourceName = questions
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzkxODAwNzIwNDEzMyIsImlhdCI6MTczOTI3ODkxOCwiZXhwIjoxNzUyMjM4OTE4fQ.bHsPeLU8VS6mudIbM9aa8JOhgMuY2RKBb6S_aap95Vw
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzkxODAwNzIwNDEzMyIsImlhdCI6MTczOTg5MTY5MSwiZXhwIjoxNzUyODUxNjkxfQ.ki3xzCYIceGt2X3iFrTEgSqDsf2qN5e84V8boITQggs
 
 ### Get all questions
 GET {{baseUrl}}/questions
+Authorization: Bearer {{token}}
 
 ### Get questions with frameworks
 GET {{baseUrl}}/questions/with-frameworks
+Authorization: Bearer {{token}}
 
 ### Create a new question
 POST {{baseUrl}}/questions
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -34,4 +37,54 @@ Content-Type: application/json
     "type": "OPEN_ENDED",
     "explanation": "Dependency injection is a design pattern that implements inversion of control for resolving dependencies.",
     "tags": ["architecture", "design-patterns"]
+}
+
+### Create Ikigai Question 1: Passion
+POST {{baseUrl}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "question": "Passion: What do you love to do?",
+    "hint": "What would you continue to do even if you had enough money to live happily ever after? Your passion is a process you love to do over and over again."
+}
+
+### Create Ikigai Question 2: Vocation
+POST {{baseUrl}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "question": "Vocation: What you're good at?",
+    "hint": "Do you know your strengths and skills? What are they? What do people ask you to help them with?"
+}
+
+### Create Ikigai Question 3: Mission
+POST {{baseUrl}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "question": "Mission: How can you make the world a better place?",
+    "hint": "What and who inspires you? What makes you annoyed or frustrated? Think of different ways you can contribute and provide value to society."
+}
+
+### Create Ikigai Question 4: Profession
+POST {{baseUrl}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "question": "Profession: What can you get paid for?",
+    "hint": "What service or product could you sell that people would pay you for? What job could you do?"
+}
+
+### Create Ikigai Question 5: Intersection
+POST {{baseUrl}}/questions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "question": "What would be the intersection of all those things?",
+    "hint": "Take all the four parts (love to do, good at, better world, get paid for) and try to combine them. Keep in mind that you can have many ikigai's, not just one."
 }

@@ -29,6 +29,7 @@ export class FrameworkEntity implements EntityMapper<FrameworkModel> {
         model.id = this.id;
         model.title = this.title;
         model.description = this.description;
+        model.questions = this.frameworkQuestions.map(fq => fq.toModel());
         return model;
     }
 
