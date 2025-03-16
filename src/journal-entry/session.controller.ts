@@ -31,7 +31,7 @@ export class SessionController {
         session.user.id = req.user.userId;
         session.summaryTitle = '';
         session.summary = '';
-        session.frameworkTitle = framework || 'Random Log';
+        session.sessionTitle = framework || 'Random Log';
         session.keywords = '';
         session.emotion_score = {};
         session.quote = '';
@@ -69,7 +69,7 @@ export class SessionController {
             question.question = "Hello, What would you like to talk about ?"
         }
         else {
-            const response = await this.aiService.getNextQuestionAsJson(entries, session.frameworkTitle)
+            const response = await this.aiService.getNextQuestionAsJson(entries, session.sessionTitle)
             //parse the json from response and get the question and hint key
             const json = JSON.parse(response)
             question.question = json.question
@@ -136,7 +136,7 @@ export class SessionController {
         for (const session of sessions) {
             const entries = await this.journalService.findBySessionId(session.id);
             if (entries.length > 0) {
-                const response = await this.aiService.getNextQuestionAsJson(entries, session.frameworkTitle);
+                const response = await this.aiService.getNextQuestionAsJson(entries, session.sessionTitle);
                 const json = JSON.parse(response);
                 session.summary = json.summary;
                 session.summaryTitle = json.oneline_summary;

@@ -27,7 +27,7 @@ export class SessionService extends BaseService<SessionEntity, SessionModel> {
         session.user = user;
         session.summaryTitle = '';
         session.summary = '';
-        session.frameworkTitle = 'Random Log';
+        session.sessionTitle = 'Random Log';
         session.keywords = '';
         session.emotion_score = {};
         session.quote = '';  // initialize the new field

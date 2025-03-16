@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
 import { UserEntity } from "./user.entity";
 import { JournalEntryEntity } from "./journal-entry.entity";
+import { FrameworkEntity } from "./framework.entity";
 import { EntityMapper } from "../common/base.entity";
 import { SessionModel } from "src/domain/models/session.model";
 
@@ -27,8 +28,8 @@ export class SessionEntity implements EntityMapper<SessionModel> {
     @Column({ default: '' })
     summary: string;
 
-    @Column({ default: 'Random Log' })
-    frameworkTitle: string;
+    @Column({ default: '' })
+    sessionTitle: string;
 
     @Column({ default: '' })
     keywords: string;
@@ -37,7 +38,13 @@ export class SessionEntity implements EntityMapper<SessionModel> {
     emotion_score: any;
 
     @Column({ default: '' })
-    quote: string;  // new field for a quote
+    quote: string;
+
+    @Column({ default: 'Freestyle' })
+    type: 'Freestyle' | 'FrameworkAided';
+
+    @ManyToOne(() => FrameworkEntity, { nullable: true })
+    framework?: FrameworkEntity;
 
     copy(model: SessionModel) {
         this.id = model.id;
@@ -47,10 +54,12 @@ export class SessionEntity implements EntityMapper<SessionModel> {
         this.journalEntries = model.journalEntries as JournalEntryEntity[];
         this.summaryTitle = model.summaryTitle;
         this.summary = model.summary;
-        this.frameworkTitle = model.frameworkTitle;
+        this.sessionTitle = model.sessionTitle;
         this.keywords = model.keywords;
         this.emotion_score = model.emotion_score;
-        this.quote = model.quote;  // copy the new field
+        this.quote = model.quote;
+        this.type = model.type;
+        this.framework = model.framework as FrameworkEntity;
         return this;
     }
 
@@ -63,10 +72,12 @@ export class SessionEntity implements EntityMapper<SessionModel> {
         model.journalEntries = this.journalEntries;
         model.summaryTitle = this.summaryTitle;
         model.summary = this.summary;
-        model.frameworkTitle = this.frameworkTitle;
+        model.sessionTitle = this.sessionTitle;
         model.keywords = this.keywords;
         model.emotion_score = this.emotion_score;
-        model.quote = this.quote;  // map the new field
+        model.quote = this.quote;
+        model.type = this.type;
+        model.framework = this.framework;
         return model;
     }
 }
